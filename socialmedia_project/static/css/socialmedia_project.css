@@ -1,0 +1,13 @@
+/*! project specific CSS goes here. */
+body {
+    padding-top: 100px;
+}
+
+.navbar-2 {
+    margin-top: 50px;
+}
+
+.navbar-2 .navbar-nav {
+    display: inline-block;
+    float: none;
+}
