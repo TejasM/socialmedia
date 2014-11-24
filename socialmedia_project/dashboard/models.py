@@ -1,13 +1,8 @@
+from django.contrib.auth.models import User
 from django.db import models
-from django.utils.functional import cached_property
 
 # Common Superclasses
 from model_utils.models import TimeStampedModel
-
-
-# Create your models here.
-class Event(TimeStampedModel):
-    event_occurrence = models.DateTimeField()
 
 
 class TwitterFollower(TimeStampedModel):
@@ -20,15 +15,25 @@ class TwitterFollower(TimeStampedModel):
     timezone = models.CharField(max_length=100, null=True, blank=True, default="")
 
 
-class HashTag(TimeStampedModel):
-    tag_name = models.CharField(max_length=100)
-    last_checked = models.DateTimeField(auto_now_add=True)
+frequencies = [('D', 'Daily'), ('W', 'Weekly'), ('M', 'Monthly')]
 
 
-class TwitterEvent(Event):
+class UserSpec(models.Model):
+    hash_tag = models.CharField(max_length=100)
+    user = models.ForeignKey(User)
+    frequency = models.CharField(choices=frequencies, max_length=1)
+
+
+class UserProfile(models.Model):
+    company_name = models.CharField(max_length=1000)
+    user = models.OneToOneField(User)
+
+
+class Tweet(models.Model):
     text = models.TextField()
+    retweets = models.IntegerField(default=0)
     tweeted_at = models.DateTimeField()
     tweet_id = models.IntegerField(unique=True)
-    happy = models.NullBooleanField(default=None, null=True, blank=True)
+    sentiment = models.TextField()
     by = models.ForeignKey(TwitterFollower)
-    hash_tags = models.ManyToManyField(HashTag)
+    spec = models.ForeignKey(UserSpec)
