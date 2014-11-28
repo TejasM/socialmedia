@@ -1,8 +1,10 @@
 from dashboard.models import UserProfile, UserSpec
 from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django.db import DataError
+from django.db.models import Q
 from django.shortcuts import render, redirect
 
 __author__ = 'tmehta'
@@ -58,24 +60,36 @@ def sign_up(request):
         return render(request, 'dashboard/sign_up.html')
 
 
+@login_required
 def main(request):
-    if request.method == "POST":
-        pass
-    else:
-        specs = UserSpec.objects.filter(user=request.user)
-        return render(request, 'dashboard/index.html', {'specs': specs})
+    UserSpec.objects.filter(user=request.user).filter(hash_tag='').delete()
+    specs = UserSpec.objects.filter(user=request.user)
+    return render(request, 'dashboard/index.html', {'specs': specs})
 
 
+@login_required
 def create_spec(request):
     if request.method == "POST":
-        pass
+        hash_tag = request.POST.get('hash_tag', '')
+        frequency = request.POST.get('frequency', '')
+        spec = UserSpec.objects.get_or_create(hash_tag=hash_tag, user=request.user)[0]
+        spec.frequency = frequency
+        spec.save()
+        return redirect(reverse('dashboard:main'))
     else:
         return render(request, 'dashboard/create_spec.html')
 
 
+@login_required
 def edit_spec(request, spec_id):
     if request.method == "POST":
-        pass
+        hash_tag = request.POST.get('hash_tag', '')
+        frequency = request.POST.get('frequency', '')
+        spec = UserSpec.objects.get(pk=spec_id)
+        spec.hash_tag = hash_tag
+        spec.frequency = frequency
+        spec.save()
+        return redirect(reverse('app:main'))
     else:
         spec = UserSpec.objects.get(pk=spec_id)
         return render(request, 'dashboard/edit_spec.html', {'spec': spec})
