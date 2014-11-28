@@ -1,4 +1,4 @@
-from dashboard.models import UserProfile
+from dashboard.models import UserProfile, UserSpec
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
@@ -62,4 +62,20 @@ def main(request):
     if request.method == "POST":
         pass
     else:
-        return render(request, 'dashboard/index.html')
+        specs = UserSpec.objects.filter(user=request.user)
+        return render(request, 'dashboard/index.html', {'specs': specs})
+
+
+def create_spec(request):
+    if request.method == "POST":
+        pass
+    else:
+        return render(request, 'dashboard/create_spec.html')
+
+
+def edit_spec(request, spec_id):
+    if request.method == "POST":
+        pass
+    else:
+        spec = UserSpec.objects.get(pk=spec_id)
+        return render(request, 'dashboard/edit_spec.html', {'spec': spec})
