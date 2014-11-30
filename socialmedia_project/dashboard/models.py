@@ -8,7 +8,7 @@ from model_utils.models import TimeStampedModel
 class TwitterFollower(TimeStampedModel):
     handle = models.CharField(max_length=100)
     name = models.CharField(max_length=1000)
-    twitter_id = models.IntegerField(unique=True)
+    twitter_id = models.BigIntegerField(unique=True)
     followers_count = models.IntegerField(default=0)
     friends_count = models.IntegerField(default=0)
     description = models.TextField()
@@ -33,7 +33,7 @@ class Tweet(models.Model):
     text = models.TextField()
     retweets = models.IntegerField(default=0)
     tweeted_at = models.DateTimeField()
-    tweet_id = models.IntegerField(unique=True)
+    tweet_id = models.BigIntegerField(unique=True)
     sentiment = models.TextField()
     by = models.ForeignKey(TwitterFollower)
     spec = models.ForeignKey(UserSpec)
