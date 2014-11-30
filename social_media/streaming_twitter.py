@@ -22,8 +22,10 @@ class MyStreamer(TwythonStreamer):
             for tag in data['hashtags']:
                 try:
                     spec = UserSpec.objects.get(hash_tag=tag['text'])
+                    print "Got", tag
                 except:
-                    pass
+                    print "Didn't Get", tag
+            print spec
             if spec:
                 Tweet.objects.create(text=data['text'], retweets=data['retweet_count'], tweeted_at=data["created_at"],
                                      tweet_id=data['id'], by=follower, spec=spec)
