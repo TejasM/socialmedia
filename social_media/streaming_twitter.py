@@ -16,8 +16,7 @@ class MyStreamer(TwythonStreamer):
                                                           name=data['user']['name'],
                                                           followers_count=data['user']["followers_count"],
                                                           friends_count=data['user']["friends_count"],
-                                                          description=data['user']["description"],
-                                                          timezone=data['user']['timezone'])
+                                                          description=data['user']["description"])
             spec = None
             for tag in data['hashtags']:
                 try:
