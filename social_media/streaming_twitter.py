@@ -18,7 +18,7 @@ class MyStreamer(TwythonStreamer):
                                                           friends_count=data['user']["friends_count"],
                                                           description=data['user']["description"])
             spec = None
-            for tag in data['hashtags']:
+            for tag in data['entities']['hashtags']:
                 try:
                     spec = UserSpec.objects.get(hash_tag=tag['text'])
                     print "Got", tag
