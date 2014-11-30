@@ -1,3 +1,4 @@
+import time
 from dashboard.models import Tweet, TwitterFollower, UserSpec
 
 __author__ = 'tmehta'
@@ -24,9 +25,9 @@ class MyStreamer(TwythonStreamer):
                     print "Got", tag
                 except:
                     print "Didn't Get", tag
-            print spec
             if spec:
-                Tweet.objects.create(text=data['text'], retweets=data['retweet_count'], tweeted_at=data["created_at"],
+                ts = time.strftime('%Y-%m-%d %H:%M:%S', time.strptime(data['created_at'], '%a %b %d %H:%M:%S +0000 %Y'))
+                Tweet.objects.create(text=data['text'], retweets=data['retweet_count'], tweeted_at=ts,
                                      tweet_id=data['id'], by=follower, spec=spec)
                 print "Tweet created"
 
