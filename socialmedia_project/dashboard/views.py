@@ -70,7 +70,7 @@ def main(request):
 @login_required
 def create_spec(request):
     if request.method == "POST":
-        hash_tag = request.POST.get('hash_tag', '')
+        hash_tag = request.POST.get('hash_tag', '').lower()
         frequency = request.POST.get('frequency', '')
         spec = UserSpec.objects.get_or_create(hash_tag=hash_tag, user=request.user)[0]
         spec.frequency = frequency

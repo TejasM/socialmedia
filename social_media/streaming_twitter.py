@@ -20,7 +20,7 @@ class MyStreamer(TwythonStreamer):
             spec = None
             for tag in data['entities']['hashtags']:
                 try:
-                    spec = UserSpec.objects.get(hash_tag=tag['text'])
+                    spec = UserSpec.objects.get(hash_tag=tag['text'].lower())
                     print "Got", tag
                 except:
                     print "Didn't Get", tag
