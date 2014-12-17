@@ -13,11 +13,14 @@ class MyStreamer(TwythonStreamer):
             try:
                 follower = TwitterFollower.objects.get(twitter_id=user_id)
             except TwitterFollower.DoesNotExist:
+                description = ''
+                if data['user']["description"]:
+                    description = data['user']["description"]
                 follower = TwitterFollower.objects.create(twitter_id=user_id, handle=data['user']['screen_name'],
                                                           name=data['user']['name'],
                                                           followers_count=data['user']["followers_count"],
                                                           friends_count=data['user']["friends_count"],
-                                                          description=data['user']["description"])
+                                                          description=description)
             spec = None
             for tag in data['entities']['hashtags']:
                 try:

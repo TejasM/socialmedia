@@ -11,7 +11,7 @@ class TwitterFollower(TimeStampedModel):
     twitter_id = models.BigIntegerField(unique=True)
     followers_count = models.IntegerField(default=0)
     friends_count = models.IntegerField(default=0)
-    description = models.TextField()
+    description = models.TextField(default='')
     timezone = models.CharField(max_length=100, null=True, blank=True, default="")
 
 
